@@ -1,0 +1,51 @@
+{% extends 'BitcoinTransactions/bitcoin.html' %}
+
+{% block transactions %}
+    {% if transactions %}
+    <h2>Transactions for: {{ address.value }}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Transaction id</th>
+                <th>Value in Satoshi</th>
+                <th>Value in BTC</th>
+                <th>Date</th>
+                <th>Size</th>
+                <th>Version</th>
+                <th>Inputs</th>
+                <th>Outputs</th>
+                <th>Weight</th>
+                <th>Block height</th>
+                <th>Result</th>
+                <th>Hash</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.transaction_id }}</td>
+                <td>{{ transaction.value }}</td>
+                <td>{{ transaction.value_btc }}</td>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.size }}</td>
+                <td>{{ transaction.version }}</td>
+                <td>{{ transaction.vin }}</td>
+                <td>{{ transaction.vout }}</td>
+                <td>{{ transaction.weight }}</td>
+                <td>
+                    {% if transaction.block_height %}
+                        {{ transaction.block_height }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{ transaction.result }}</td>
+                <td>{{ transaction.hash }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        No transactions
+    {% endif %}
+{% endblock %}
