@@ -10,6 +10,9 @@
         {{ form.as_p }}
         <input type="submit" value="Submit" />
     </form>
+    <div>
+        <a href="{% url "BitcoinTransactions:qr" %}">Go to generating QR code.</a>
+    </div>
     {% block transactions %}
     {% endblock %}
 </body>

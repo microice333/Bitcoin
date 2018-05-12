@@ -7,5 +7,5 @@ class DateInput(forms.DateInput):
 
 class BitcoinForm(forms.Form):
     address = forms.CharField(label='Bitcoin address', max_length=100)
-    from_date = forms.DateField(widget=DateInput())
-    to_date = forms.DateField(widget=DateInput())
+    from_date = forms.DateField(widget=DateInput(), required=False)
+    to_date = forms.DateField(widget=DateInput(), required=False)

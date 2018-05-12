@@ -6,10 +6,9 @@ class Address(models.Model):
 
 
 class Transaction(models.Model):
-    addresses = models.ManyToManyField(Address)
+    addresses = models.ManyToManyField(Address, through='TransactionValue')
     date = models.DateField()
     transaction_id = models.IntegerField()
-    value = models.BigIntegerField()
     size = models.IntegerField()
     version = models.IntegerField()
     vin = models.IntegerField()
@@ -18,6 +17,13 @@ class Transaction(models.Model):
     weight = models.IntegerField()
     block_height = models.IntegerField(null=True)
     result = models.IntegerField()
+
+
+class TransactionValue(models.Model):
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+    value = models.BigIntegerField()
+    is_in = models.BooleanField()
 
     def value_btc(self):
         return self.value / 100000000
