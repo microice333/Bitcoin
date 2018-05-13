@@ -8,6 +8,10 @@ from .views_helpers import collect_transactions
 
 
 def bitcoin(request):
+    """
+    Generating view with form for bitcoin address and date range and list of transactions.
+    """
+
     if request.method == 'POST':
         form = BitcoinForm(request.POST)
 
@@ -46,8 +50,15 @@ def bitcoin(request):
 
 
 def generate_qr(request, address):
-        img = qrcode.make(address)
-        response = HttpResponse(content_type='image/png')
-        img.save(response, "PNG")
+    """
+    Generate QR code image by qrcode library.
+    :param request:
+    :param address: Address of bitcoin given by user.
+    :return: HttpResponse with QR image.
+    """
 
-        return response
+    img = qrcode.make(address)
+    response = HttpResponse(content_type='image/png')
+    img.save(response, "PNG")
+
+    return response
