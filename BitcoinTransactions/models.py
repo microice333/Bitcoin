@@ -24,6 +24,3 @@ class TransactionValue(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     value = models.BigIntegerField()
     is_in = models.BooleanField()
-
-    def value_btc(self):
-        return self.value / 100000000

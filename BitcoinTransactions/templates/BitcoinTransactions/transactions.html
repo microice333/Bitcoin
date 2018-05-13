@@ -2,12 +2,15 @@
 
 {% block transactions %}
     {% if transactions %}
+        {% load bitcoin_tags %}
         <h2>Transactions for: {{ address.value }}</h2>
         <img src="{% url 'BitcoinTransactions:qr' address.value %}" />
         <div>
             <strong>Count of transactions: </strong>{{ transactions_info.count }}<br>
             <strong>Sum of transactions(in Satoshi): </strong>{{ transactions_info.sum }}<br>
+            <strong>Sum of transactions(in BTC): </strong>{{ transactions_info.sum|satoshi_to_bitcoin }}<br>
             <strong>Saldo of transactions(in Satoshi): </strong>{{ transactions_info.saldo }}<br>
+            <strong>Saldo of transactions(in BTC): </strong>{{ transactions_info.saldo|satoshi_to_bitcoin }}<br>
         </div>
         <table>
             <thead>
@@ -31,7 +34,7 @@
                 <tr>
                     <td>{{ transaction.transaction.transaction_id }}</td>
                     <td>{% if transaction.is_in %}-{% endif %}{{ transaction.value }}</td>
-                    <td>{% if transaction.is_in %}-{% endif %}{{ transaction.value_btc }}</td>
+                    <td>{% if transaction.is_in %}-{% endif %}{{ transaction.value|satoshi_to_bitcoin }}</td>
                     <td>{{ transaction.transaction.date }}</td>
                     <td>{{ transaction.transaction.size }}</td>
                     <td>{{ transaction.transaction.version }}</td>
