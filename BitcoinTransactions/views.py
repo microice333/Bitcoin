@@ -1,4 +1,5 @@
-from django.shortcuts import render
+import qrcode
+from django.shortcuts import render, HttpResponse
 from django.db.models import Sum, Count, Q
 from django.db.models.functions import Coalesce
 from .forms import BitcoinForm
@@ -31,11 +32,12 @@ def bitcoin(request):
             transactions = address.transactionvalue_set.filter(**filters)
 
             return render(request, 'BitcoinTransactions/transactions.html', {
+                'address': address,
                 'form': form,
                 'transactions': transactions,
                 'transactions_info': transactions.all().aggregate(sum=Sum('value'), count=Count('transaction'),
-                                                                  saldo=Coalesce(Sum('value', filter=Q(is_in=True)), 0)
-                                                                  - Coalesce(Sum('value', filter=Q(is_in=False)), 0))
+                                                                  saldo=Coalesce(Sum('value', filter=Q(is_in=False)), 0)
+                                                                  - Coalesce(Sum('value', filter=Q(is_in=True)), 0))
             })
     else:
         form = BitcoinForm()
@@ -43,5 +45,8 @@ def bitcoin(request):
     return render(request, 'BitcoinTransactions/bitcoin.html', {'form': form})
 
 
-def generate_qr(request):
-    return render(request, 'BitcoinTransactions/qr.html')
+def generate_qr(request, address):
+        img = qrcode.make(address)
+        response = HttpResponse(content_type='image/png')
+        img.save(response, "PNG")
+        return response

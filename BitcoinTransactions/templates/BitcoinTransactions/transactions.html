@@ -2,7 +2,8 @@
 
 {% block transactions %}
     {% if transactions %}
-        <h2>Transactions for: {{ transactions.0.address.value }}</h2>
+        <h2>Transactions for: {{ address.value }}</h2>
+        <img src="{% url 'BitcoinTransactions:qr' address.value %}" />
         <div>
             <strong>Count of transactions: </strong>{{ transactions_info.count }}<br>
             <strong>Sum of transactions(in Satoshi): </strong>{{ transactions_info.sum }}<br>
@@ -29,8 +30,8 @@
             {% for transaction in transactions %}
                 <tr>
                     <td>{{ transaction.transaction.transaction_id }}</td>
-                    <td>{% if not transaction.is_in %}-{% endif %}{{ transaction.value }}</td>
-                    <td>{% if not transaction.is_in %}-{% endif %}{{ transaction.value_btc }}</td>
+                    <td>{% if transaction.is_in %}-{% endif %}{{ transaction.value }}</td>
+                    <td>{% if transaction.is_in %}-{% endif %}{{ transaction.value_btc }}</td>
                     <td>{{ transaction.transaction.date }}</td>
                     <td>{{ transaction.transaction.size }}</td>
                     <td>{{ transaction.transaction.version }}</td>

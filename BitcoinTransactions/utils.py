@@ -8,6 +8,8 @@ def add_transactions(tx, in_or_out, address):
     found_transaction = False
 
     for data in tx[in_or_out]:
+        if in_or_out == 'inputs':
+            data = data['prev_out']
         if address.value == data['addr']:
             value = data['value']
             found_transaction = True
@@ -29,14 +31,15 @@ def add_transactions(tx, in_or_out, address):
             transaction.block_height = tx['block_height']
             transaction.save()
 
-        TransactionValue.objects.create(address=address, transaction=transaction, value=value, is_in=(in_or_out == 'in'))
+        TransactionValue.objects.create(address=address, transaction=transaction, value=value,
+                                        is_in=(in_or_out == 'inputs'))
 
 
 def collect_transactions(address):
     address_data = requests.get('https://blockchain.info/pl/rawaddr/%s' % (address.value)).json()
 
     for tx in address_data['txs']:
-        if 'in' in tx.keys():
-            add_transactions(tx, 'in', address)
+        if 'inputs' in tx.keys():
+            add_transactions(tx, 'inputs', address)
         if 'out' in tx.keys():
             add_transactions(tx, 'out', address)
