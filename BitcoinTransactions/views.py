@@ -4,7 +4,7 @@ from django.db.models import Sum, Count, Q
 from django.db.models.functions import Coalesce
 from .forms import BitcoinForm
 from .models import Address
-from .utils import collect_transactions
+from .views_helpers import collect_transactions
 
 
 def bitcoin(request):
@@ -49,4 +49,5 @@ def generate_qr(request, address):
         img = qrcode.make(address)
         response = HttpResponse(content_type='image/png')
         img.save(response, "PNG")
+
         return response
