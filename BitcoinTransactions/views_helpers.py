@@ -1,8 +1,10 @@
 import requests
 import datetime
+from django.db import transaction
 from .models import Transaction, TransactionValue
 
 
+@transaction.atomic
 def add_transactions(transaction_json, address_type, address):
     """
     Get transaction as json and add Transaction and TransactionValue object based on it to database.
